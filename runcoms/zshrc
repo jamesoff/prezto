@@ -11,3 +11,67 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+#zstyle ':prezto:module:editor' dot-expansion 'yes'
+#zstyle ':prezto:module:terminal' auto-title 'yes'
+
+unsetopt AUTO_CD
+
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11R6/bin:/Users/james/bin
+
+if [ -d /Users/james/pebble ]; then
+    export PATH=$PATH:/Users/james/pebble/PebbleSDK-2.0.0/bin
+fi
+
+if [ -d /Users/james/bin ]; then
+    export PATH=$PATH:/Users/james/bin
+fi
+
+if [ $( hostname -s ) = "yukino" ]; then
+    # At work
+    hash -d puppet=/Users/jseward/src/puppet
+    hash -d sm5=/Users/jseward/src/sm5
+fi
+
+export COPYFILE_DISABLE=true
+
+if [ -f /usr/local/bin/aws_zsh_completer.sh ]; then
+    source /usr/local/bin/aws_zsh_completer.sh
+fi
+
+alias flake8="flake8 --ignore=E501"
+alias md5sum=md5
+alias vim=nvim
+
+setopt TRANSIENT_RPROMPT
+REPORTTIME=10
+
+function fuck() {
+    killall -9 $2;
+    if [ $? == 0 ]
+        then
+        echo
+        echo " (╯°□°）╯︵$(echo $2|flip &2>/dev/null)"
+        echo
+    fi
+}
+
+export EDITOR=nvim
+PERL_MB_OPT="--install_base \"/Users/jseward/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/jseward/perl5"; export PERL_MM_OPT;
+
+
+function tidy_nagios() {
+    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function watch_elb () {
+	watch -n 10 "aws elb describe-instance-health --load-balancer-name "$1" | jq '.InstanceStates[].State' | sort | uniq -c"
+}
+
+function agvim () {
+	nvim $(ag "$1" | fzf | awk 'BEGIN { FS=":" } { printf "+%d %s\n", $2, $1 } ')
+}
+
+zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'

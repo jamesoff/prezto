@@ -97,3 +97,5 @@ function try_ssh () {
 }
 
 zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
+
+[ -f ~/.ec2/moonfruit ] && source ~/.ec2/moonfruit

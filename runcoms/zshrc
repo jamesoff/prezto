@@ -30,6 +30,7 @@ if [ $( hostname -s ) = "yukino" ]; then
     # At work
     hash -d puppet=/Users/jseward/src/puppet
     hash -d sm5=/Users/jseward/src/sm5
+	alias rr=rake rspec
 fi
 
 export COPYFILE_DISABLE=true
@@ -61,7 +62,7 @@ PERL_MM_OPT="INSTALL_BASE=/Users/jseward/perl5"; export PERL_MM_OPT;
 
 
 function tidy_nagios() {
-    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
+    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv -f "$1_tmp" "$1"
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

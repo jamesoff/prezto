@@ -71,7 +71,28 @@ function watch_elb () {
 }
 
 function agvim () {
-	nvim $(ag "$1" | fzf | awk 'BEGIN { FS=":" } { printf "+%d %s\n", $2, $1 } ')
+	CHOICE=$(ag --color $* | fzf -0 -1 --ansi)
+	if [ ! -z "$CHOICE" ]; then
+		# Open vim at the selected file and line, but also run the Ag scan
+		# the ! on Ag! stops Ag jumping to the first match, and the wincmd gives the editor window focus
+		nvim $( echo "$CHOICE" | awk 'BEGIN { FS=":" } { printf "+%d %s\n", $2, $1 } ') +"Ag! '$*'" "+wincmd k"
+	fi
+}
+
+function try_ssh () {
+	SUCCESS=0
+	while [ $SUCCESS -eq 0 ]; do
+		ssh -o "ConnectTimeout 30" $*
+		RESULT=$?
+		if [ $RESULT -ne 255 ]; then
+			SUCCESS=1
+		else
+			echo "--> SSH return code was $RESULT"
+			print "Waiting to retry ssh..."
+			sleep 10
+			echo "--> Retrying..."
+		fi
+	done
 }
 
 zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'

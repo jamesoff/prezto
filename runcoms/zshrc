@@ -30,7 +30,6 @@ if [ $( hostname -s ) = "yukino" ]; then
     # At work
     hash -d puppet=/Users/jseward/src/puppet
     hash -d sm5=/Users/jseward/src/sm5
-	alias rr=rake rspec
 fi
 
 export COPYFILE_DISABLE=true
@@ -62,7 +61,7 @@ PERL_MM_OPT="INSTALL_BASE=/Users/jseward/perl5"; export PERL_MM_OPT;
 
 
 function tidy_nagios() {
-    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv -f "$1_tmp" "$1"
+    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -72,30 +71,9 @@ function watch_elb () {
 }
 
 function agvim () {
-	CHOICE=$(ag $* | fzf )
-	if [ ! -z "$CHOICE" ]; then
-		# Open vim at the selected file and line, but also run the Ag scan
-		# the ! on Ag! stops Ag jumping to the first match, and the wincmd gives the editor window focus
-		nvim $( echo "$CHOICE" | awk 'BEGIN { FS=":" } { printf "+%d %s\n", $2, $1 } ') +"Ag! $*" "+wincmd k"
-	fi
-}
-
-function try_ssh () {
-	SUCCESS=0
-	while [ $SUCCESS -eq 0 ]; do
-		ssh -o "ConnectTimeout 30" $*
-		RESULT=$?
-		if [ $RESULT -ne 255 ]; then
-			SUCCESS=1
-		else
-			echo "--> SSH return code was $RESULT"
-			print "Waiting to retry ssh..."
-			sleep 10
-			echo "--> Retrying..."
-		fi
-	done
+	nvim $(ag "$1" | fzf | awk 'BEGIN { FS=":" } { printf "+%d %s\n", $2, $1 } ')
 }
 
 zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
 
-[ -f ~/.ec2/moonfruit ] && source ~/.ec2/moonfruit
+export FZF_DEFAULT_OPTS='-e'

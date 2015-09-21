@@ -98,3 +98,14 @@ function try_ssh () {
 zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
 
 export FZF_DEFAULT_OPTS='-e'
+
+function vpn () {
+	if $( pgrep vpnc > /dev/null ); then
+		echo "--> Disconnecting VPN"
+		sudo /usr/local/sbin/vpnc-disconnect
+	else
+		echo "--> Connecting VPN"
+		sudo /usr/local/sbin/vpnc
+	fi
+}
+

@@ -66,6 +66,7 @@ function tidy_nagios() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
 
 function watch_elb () {
 	watch -n 10 "aws elb describe-instance-health --load-balancer-name "$1" | jq '.InstanceStates[].State' | sort | uniq -c"

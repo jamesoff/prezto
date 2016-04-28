@@ -56,9 +56,7 @@ function fuck() {
 }
 
 export EDITOR=nvim
-PERL_MB_OPT="--install_base \"/Users/jseward/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/jseward/perl5"; export PERL_MM_OPT;
-
+export VISUAL=nvim
 
 function tidy_nagios() {
     python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
@@ -115,3 +113,5 @@ function vpn () {
 
 # override from emacs-forword-word for the autosuggest feature
 bindkey '^[f' forward-word
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

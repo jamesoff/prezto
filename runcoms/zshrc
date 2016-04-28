@@ -112,3 +112,6 @@ function vpn () {
 
 [ -f /Users/james/.travis/travis.sh ] && source /Users/james/.travis/travis.sh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
+
+# override from emacs-forword-word for the autosuggest feature
+bindkey '^[f' forward-word

@@ -62,10 +62,17 @@ function prompt_sorin_git_info {
 }
 
 function prompt_sorin_precmd_async {
+  if klist 2> /dev/null | grep -q krbtgt; then
+      _prompt_sorin_krb_status='🔒  '
+  else
+      _prompt_sorin_krb_status=''
+  fi
+  typeset -p _prompt_sorin_krb_status >! "$_prompt_sorin_precmd_async_data"
+
   # Get Git repository information.
   if (( $+functions[git-info] )); then
     git-info
-    typeset -p git_info >! "$_prompt_sorin_precmd_async_data"
+    typeset -p git_info >>! "$_prompt_sorin_precmd_async_data"
   fi
 
   # Signal completion to parent process.
@@ -80,7 +87,7 @@ function prompt_sorin_precmd {
   prompt_sorin_pwd
 
   # Define prompts.
-  RPROMPT='${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'
+  RPROMPT='${_prompt_sorin_krb_status}${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'
 
   # Kill the old process of slow commands if it is still running.
   if (( _prompt_sorin_precmd_async_pid > 0 )); then

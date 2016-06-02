@@ -108,6 +108,11 @@ function vpn () {
 	fi
 }
 
+function brew-upgrade () {
+	brew update
+	brew outdated | fzf -m -n 1 --tac --header='Select formulae to upgrade with tab' | xargs brew upgrade
+}
+
 [ -f /Users/james/.travis/travis.sh ] && source /Users/james/.travis/travis.sh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
 

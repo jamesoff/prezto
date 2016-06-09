@@ -18,6 +18,10 @@ unsetopt AUTO_CD
 
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11R6/bin:/Users/james/bin
 
+if [ -d /usr/home/james/.local/bin  ]; then
+	export PATH=$PATH:/usr/home/james/.local/bin
+fi
+
 if [ -d /Users/james/pebble ]; then
     export PATH=$PATH:/Users/james/pebble/PebbleSDK-2.0.0/bin
 fi

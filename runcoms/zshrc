@@ -53,6 +53,8 @@ export VISUAL=nvim
 
 export FZF_DEFAULT_OPTS='-e'
 
+[ -d ~/.config ] && export XDG_CONFIG_HOME=~/.config
+
 alias flake8="flake8 --ignore=E501"
 alias md5sum=md5
 hash nvim &> /dev/null && alias vim=nvim

@@ -25,6 +25,7 @@ DIRS=(
 	/usr/local/bin
 	/usr/X11R6/bin
 	/Users/james/bin
+	/Users/james/Library/Python/2.7/bin
 	/usr/home/james/.local/bin
 	)
 

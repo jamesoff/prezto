@@ -44,7 +44,9 @@ for d in $DIRS; do
 		export PATH=$PATH:$d
 	fi
 done
-unset DIRS
+NEWPATH=$(echo $PATH | awk -F: '{for (i=1;i<=NF;i++) { if ( !x[$i]++ ) printf("%s:",$i); }}')
+PATH=${NEWPATH:0:-1}
+unset DIRS NEWPATH
 
 # Make clean tarballs on OS X without extended attrs
 export COPYFILE_DISABLE=true

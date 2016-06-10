@@ -24,9 +24,9 @@ zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
 DIRS=(
 	/usr/local/bin
 	/usr/X11R6/bin
-	/Users/james/bin
-	/Users/james/Library/Python/2.7/bin
-	/usr/home/james/.local/bin
+	~/bin
+	~/Library/Python/2.7/bin
+	~/.local/bin
 	)
 
 # Things to source, if they exist

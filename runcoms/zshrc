@@ -7,7 +7,7 @@
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+	source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # Customize to your needs...
@@ -15,59 +15,54 @@ fi
 #zstyle ':prezto:module:terminal' auto-title 'yes'
 
 unsetopt AUTO_CD
+setopt TRANSIENT_RPROMPT
 
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11R6/bin:/Users/james/bin
+zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
 
-if [ -d /usr/home/james/.local/bin  ]; then
-	export PATH=$PATH:/usr/home/james/.local/bin
-fi
 
-if [ -d /Users/james/pebble ]; then
-    export PATH=$PATH:/Users/james/pebble/PebbleSDK-2.0.0/bin
-fi
+# Thing to add to PATH, if they exist
+DIRS=(
+	/usr/local/bin
+	/usr/X11R6/bin
+	/Users/james/bin
+	/usr/home/james/.local/bin
+	)
 
-if [ -d /Users/james/bin ]; then
-    export PATH=$PATH:/Users/james/bin
-fi
+# Things to source, if they exist
+FILES=(
+	/usr/local/share/zsh/site-functions/_aws
+	/Users/james/.travis/travis.sh
+	~/.iterm2_shell_integration.zsh
+	~/.fzf.zsh
+	/usr/local/etc/profile.d/autojump.sh
+	)
 
-if [ $( hostname -s ) = "yukino" ]; then
-    # At work
-    hash -d puppet=/Users/jseward/src/puppet
-    hash -d sm5=/Users/jseward/src/sm5
-fi
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin
+for d in $DIRS; do
+	if [ -d $d ]; then
+		export PATH=$PATH:$d
+	fi
+done
+unset DIRS
 
+# Make clean tarballs on OS X without extended attrs
 export COPYFILE_DISABLE=true
 
-if [ -f /usr/local/share/zsh/site-functions/_aws ]; then
-	source /usr/local/share/zsh/site-functions/_aws
-fi
+export EDITOR=nvim
+export VISUAL=nvim
+
+export FZF_DEFAULT_OPTS='-e'
 
 alias flake8="flake8 --ignore=E501"
 alias md5sum=md5
 hash nvim &> /dev/null && alias vim=nvim
 
-setopt TRANSIENT_RPROMPT
 REPORTTIME=10
 
-function fuck() {
-    killall -9 $2;
-    if [ $? == 0 ]
-        then
-        echo
-        echo " (╯°□°）╯︵$(echo $2|flip &2>/dev/null)"
-        echo
-    fi
-}
-
-export EDITOR=nvim
-export VISUAL=nvim
-
 function tidy_nagios() {
-    python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
+	python ~/src/puppet/modules/nagios/tidy_nagios.py "$1" > "${1}_tmp" && mv "$1_tmp" "$1"
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
 
 function watch_elb () {
 	watch -n 10 "aws elb describe-instance-health --load-balancer-name "$1" | jq '.InstanceStates[].State' | sort | uniq -c"
@@ -98,9 +93,6 @@ function try_ssh () {
 	done
 }
 
-zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{2}❯%f%b'
-
-export FZF_DEFAULT_OPTS='-e'
 
 function vpn () {
 	if $( pgrep vpnc > /dev/null ); then
@@ -117,10 +109,11 @@ function brew-upgrade () {
 	brew outdated | fzf -m -n 1 --tac --header='Select formulae to upgrade with tab' | xargs brew upgrade
 }
 
-[ -f /Users/james/.travis/travis.sh ] && source /Users/james/.travis/travis.sh
-[ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
+for f in $FILES; do
+	if [ -f $f ]; then
+		source $f
+	fi
+done
 
 # override from emacs-forword-word for the autosuggest feature
 bindkey '^[f' forward-word
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

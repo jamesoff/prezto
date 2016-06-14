@@ -55,6 +55,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 export FZF_DEFAULT_OPTS='-e'
+export FZF_TMUX=0
 
 [ -d ~/.config ] && export XDG_CONFIG_HOME=~/.config
 

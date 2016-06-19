@@ -36,6 +36,7 @@ FILES=(
 	~/.iterm2_shell_integration.zsh
 	~/.fzf.zsh
 	/usr/local/etc/profile.d/autojump.sh
+	~/.nvim/bundle/neoman.vim/scripts/neovim.zsh
 	)
 
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin

@@ -35,8 +35,8 @@ FILES=(
 	/Users/james/.travis/travis.sh
 	~/.iterm2_shell_integration.zsh
 	~/.fzf.zsh
-	/usr/local/etc/profile.d/autojump.sh
 	~/.nvim/bundle/neoman.vim/scripts/neovim.zsh
+	/usr/local/etc/profile.d/z.sh
 	)
 
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin
@@ -63,7 +63,7 @@ export FZF_TMUX=0
 alias flake8="flake8 --ignore=E501"
 alias md5sum=md5
 hash nvim &> /dev/null && alias vim=nvim
-hash pygmentize &> /dev/null && alias cat=pygmentize
+hash pygmentize &> /dev/null && alias cat="pygmentize -g"
 
 REPORTTIME=10
 
